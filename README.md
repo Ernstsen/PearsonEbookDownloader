@@ -18,7 +18,9 @@ This will take a few minutes, downloading each individual page of the PDF (thank
 
 The output pdf will be saved into the current directory as `out.pdf`
 
-Also... Please don't use this for piracy. I paid for my online textbook, as should you, but I paid for a working textbook, not something that takes a minute to load each page of. While I can't stop you, please only use this utility if you have paid for the textbook.
+**NOTE** the fully automated downloader no longer works. This means that it is no longer possible to download a book you have not paid for - as it should be.
+
+This tool should only be used to obtain a readable version of the book, as the online reading version is still horrible. While possible, a pdf created using this code should never be shared.
 
 ## Donation
 This is just an attempt at patching the original work - please consider supporting the original author:
