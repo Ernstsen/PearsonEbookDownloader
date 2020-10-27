@@ -3,22 +3,30 @@ Forked from [NoMod-Programming](https://github.com/NoMod-Programming/PearsonEboo
 
 # Usage
 
-**TODO** Update this description. Project was forked as this no longer works
+## Part 1 : Javascript
+To use this utility, first log into the pearson website and access the E-Book. After about 10 seconds (or once the eText is loaded), copy the bookID parameter (anywhere from 5-6 digits long) and download it either using using the online downloader ("index.html" in this repository, and also available at https://NoMod-Programming.github.io/PearsonEbookDownloader/).
+The first two boxes will be filled with information, while the third one sadly fails. 
 
-To use this utility, first log into the pearson website and access the E-Book. After about 10 seconds (or once the eText is loaded), copy the bookID parameter (anywhere from 5-6 digits long) and download it either using using the online downloader ("index.html" in this repository, and also available at https://NoMod-Programming.github.io/PearsonEbookDownloader/) or manually using python.
+- The leftmost one should be copied to a file, saved as ``bookInfo.json``
+- The second one (middle) should be copied to a file, saved as ``pageinfo.json``
 
+Now go to ``scripts/pasteToBrowser.js`` and copy the entire file. This should then be pasted into the developer console, with the following changes:
 
-To use the python version, run this utility as follows:
+- ``list`` should be set to the entire content of the file ``pageinfo.json``
+- ``bookId`` should be set to the field ``globalBookID`` from the file ``bookinfo.json``  
 
-	python3 downloader.py <bookid>
+The file which is then downloaded should then be copied to this root folder, with the other json files, and be named ``pages.json``
 
-Where python3 points to the location of a python interpreter with the PyPDF2 module available (`pip install pypdf2`).
+## Part 2 : Python
+*Pre-requisite:* Python 3.x with the package PyPDF2 installed (``pip install pypdf2``)
 
-This will take a few minutes, downloading each individual page of the PDF (thanks, Pearson, for using *individual* pdf files for each page a thousand page book!) to a temporary directory, then merging them into a final PDF.
+Run the python script ``python downloader.py``, which should then read the files, and compile a .pdf
 
-The output pdf will be saved into the current directory as `out.pdf`
+The output pdf will then be saved into the current directory.
 
-**NOTE** the fully automated downloader no longer works. This means that it is no longer possible to download a book you have not paid for - as it should be.
+**NOTE** the fully automated downloader no longer works. This means that it is no longer possible to download a book you have not paid for - which is as it should be.
+
+Also note that this technically is no longer a downloader, as the script in itself no longer downloads the book from the server.
 
 This tool should only be used to obtain a readable version of the book, as the online reading version is still horrible. While possible, a pdf created using this code should never be shared.
 
