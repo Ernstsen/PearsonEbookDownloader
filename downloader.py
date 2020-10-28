@@ -56,6 +56,9 @@ def main():
         pdf_page_label_table = {}
 
         # urllib.request.urlretrieve(getPageUrl(bookInfo['pdfCoverArt'], isCover="Y"), os.path.join(pdfDownloadDir, "0000 - cover.pdf"))
+        with open(os.path.join(pdfDownloadDir, "0000 - cover.pdf"), 'w+b') as ous:
+            ous.write(get_data(pageInfo[0]['pageID']))
+
         # Then, download all the individual pages for the e-book
         def download(pdfPage):
             pdfPageTable[pdfPage['bookPageNumber']] = pdfPage['pageOrder']
