@@ -5,10 +5,13 @@ Forked from [NoMod-Programming](https://github.com/NoMod-Programming/PearsonEboo
 
 ## Part 1 : Javascript
 To use this utility, first log into the pearson website and access the E-Book. After about 10 seconds (or once the eText is loaded), copy the bookID parameter (anywhere from 5-6 digits long) and download it either using using the online downloader ("index.html" in this repository, and also available at https://NoMod-Programming.github.io/PearsonEbookDownloader/).
-The first two boxes will be filled with information, while the third one sadly fails. 
+These three boxes will be filled with information about the book, the pages, and the bookmarks 
 
 - The leftmost one should be copied to a file, saved as ``bookInfo.json``
 - The second one (middle) should be copied to a file, saved as ``pageinfo.json``
+- The third one (right) should be copied to a file, saved as ``bookmarks.json`` - this one is optional, and wont always exist
+
+All these files will automatically download, with the correct names, if your browser allows it (it may prompt you, and is for permission to do multiple downloads).
 
 Now go to ``scripts/pasteToBrowser.js`` and copy the entire file. This should then be pasted into the developer console, with the following changes:
 
@@ -19,6 +22,8 @@ The file which is then downloaded should then be copied to this root folder, wit
 
 ## Part 2 : Python
 *Pre-requisite:* Python 3.x with the package PyPDF2 installed (``pip install pypdf2``)
+
+Place all 4 files from the js step in the root folder of the project.
 
 Run the python script ``python downloader.py``, which should then read the files, and compile a .pdf
 

@@ -66,7 +66,7 @@ def main():
             # urllib.request.urlretrieve(getPageUrl(pdfPage['pdfPath']), savePath)
 
         threadPool = ThreadPool(40)  # 40 threads should download a book fairly quickly
-        print("Reading pages from pageinfo.json \"{}\"...".format(pdfDownloadDir))
+        print("Reading pages from pageinfo.json to \"{}\"...".format(pdfDownloadDir))
         threadPool.map(download, pageInfo)
 
         print("Assembling PDF...")
@@ -78,24 +78,15 @@ def main():
             os.remove(os.path.join(pdfDownloadDir, pdfFile))  # Save on memory a bit
             fileMerger.addPage(page)
 
-        # And then add all the bookmarks to the final PDF
-        bookmarkInfoGetUrl = bookmarkInfoUrl.format(
-            userroleid=roletypeid,
-            # bookid=book_id,
-            language=language,
-            bookeditionid=bookInfo['bookEditionID'],
-            scenarioid=1001
-        )
-
-        bookmarksExist = False
+        bookmarksExist = True
 
         # TODO: Bookmarks currently not supported
-        # with urllib.request.urlopen(hsidUrl(bookmarkInfoGetUrl)) as bookmarkInfoRequest:
-        #     try:
-        #         bookmarkInfo = json.loads(bookmarkInfoRequest.read().decode('utf-8'))
-        #         bookmarkInfo = bookmarkInfo[0]['basketsInfoTOList'][0]
-        #     except Exception as e:
-        #         bookmarksExist = False
+        with open("bookmarks.json", 'r') as bookmarkInfoRequest:
+            try:
+                bookmarkInfo = json.loads(bookmarkInfoRequest.read())
+                bookmarkInfo = bookmarkInfo[0]['basketsInfoTOList'][0]
+            except Exception as e:
+                bookmarksExist = False
 
         def recursiveSetBookmarks(aDict, parent=None):
             if isinstance(aDict, dict):
@@ -112,10 +103,10 @@ def main():
 
         if bookmarksExist:
             print("Adding bookmarks...")
-            # fileMerger.addBookmark("Cover", 0) # Add a bookmark to the cover at the beginning
-            # recursiveSetBookmarks(bookmarkInfo['document'][0]['basketcollection']['basket']['basketentry'])
+            fileMerger.addBookmark("Cover", 0) # Add a bookmark to the cover at the beginning
+            recursiveSetBookmarks(bookmarkInfo['document'][0]['basketcollection']['basket']['basketentry'])
         else:
-            print("Bookmarks don't exist for ID {}".format(book_id))
+            print("Bookmarks don't exist for book")
         print("Fixing metadata...")
         # Hack to fix metadata and page numbers:
         pdf_page_label_table = [(v, k) for k, v in pdfPageTable.items()]
@@ -162,12 +153,10 @@ def main():
         })
 
         print("Writing PDF...")
-        with open("{} - {}.pdf".format(book_id, bookInfo['title']).replace("/", "").replace(":", "_"), "wb") as outFile:
+        with open("{}.pdf".format(bookInfo['title']).replace("/", "").replace(":", "_"), "wb") as outFile:
             fileMerger.write(outFile)
 
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print("Missing url of eText or bookId!")
-        sys.exit(0)
-    main(sys.argv[1])
+    #TODO: Consider checking if files exists, as to avoid nasty crash if they do not
+    main()
